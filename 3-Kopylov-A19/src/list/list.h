@@ -9,6 +9,11 @@ extern "C" {
 		struct list_t* prev;
 	}list;
 
+	typedef enum status {
+		ERROR,
+		OK
+	};
+
 	list * createList();
 
 	int addElementToList(list* spisok, char* value);

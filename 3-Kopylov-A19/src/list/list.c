@@ -6,9 +6,9 @@ extern "C" {
 #endif
 
 	list * createList() {
-		list * spisok = (list*)malloc(sizeof(list));
+		list* spisok = (list*)malloc(sizeof(list));
 		if (spisok == NULL) {
-			return NULL;
+			return ERROR;
 		}
 		spisok->length = 0;
 		spisok->next = NULL;
@@ -18,7 +18,7 @@ extern "C" {
 	}
 
 	int addElementToList(list* spisok, char* value) {
-		list* temp;
+		list* temp, * t;
 		if (spisok->length == 0 && spisok->value == NULL) {
 			spisok->value = value;
 			spisok->length = strlen(value);
@@ -26,46 +26,39 @@ extern "C" {
 		else {
 			temp = (list*)malloc(sizeof(list));
 			if (temp == NULL) {
-				return 1;
+				return ERROR;
 			}
 			temp->length = strlen(value);
 			temp->value = value;
-			if (spisok->next == NULL) {
-				spisok->next = temp;
-				temp->prev = spisok;
+			t = spisok;
+			while (t->next != NULL) {
+				t = t->next;
 			}
-			else {
-				spisok->prev->next = temp;
-				temp->prev = spisok->prev;
-			}
-			temp->next = spisok;
-			spisok->prev = temp;
+			t->next = temp;
+			temp->prev = t;
+			temp->next = NULL;
 		}
-		return 0;
+		return OK;
 	}
 
 	int destroyList(list** spisok) {
 		if (*spisok == NULL) {
-			return 0;
+			return OK;
 		}
-		if ((*spisok)->prev != NULL) {
-			(*spisok)->prev->next = NULL;
+		if ((*spisok)->next != NULL) {
 			list* p = *spisok, * t = NULL;
-			while (1) {
+			while (p!=NULL) {
 				t = p->next;
 				free(p);
 				p = t;
-				if (p == NULL) {
-					break;
-				}
 			}
 			*spisok = NULL;
-			return 0;
+			return OK;
 		}
 		else {
 			free(*spisok);
 			*spisok = NULL;
-			return 0;
+			return OK;
 		}
 	}
 
@@ -81,7 +74,7 @@ extern "C" {
 
 	void sortList(list* source) {
 		if (source == NULL || source->next == NULL) {
-			return;
+			return OK;
 		}
 		list* p, * pNext;
 		int cnt = 1;
@@ -89,7 +82,7 @@ extern "C" {
 			cnt = 0;
 			p = source;
 			pNext = p->next;
-			while (pNext != source) {
+			while (pNext != NULL) {
 				if (strcmp(p->value, pNext->value) > 0) {
 					swapValues(p, pNext);
 					cnt++;
