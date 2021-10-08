@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-	list * createList() {
+	list* createList() {
 		list* spisok = (list*)malloc(sizeof(list));
 		if (spisok == NULL) {
 			return ERROR;
@@ -47,7 +47,7 @@ extern "C" {
 		}
 		if ((*spisok)->next != NULL) {
 			list* p = *spisok, * t = NULL;
-			while (p!=NULL) {
+			while (p != NULL) {
 				t = p->next;
 				free(p);
 				p = t;

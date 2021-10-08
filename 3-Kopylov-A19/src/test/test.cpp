@@ -8,7 +8,7 @@
 
 TEST(createListTest, createList_returnRightValue) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	list* spisok = createList();	
+	list* spisok = createList();
 	EXPECT_TRUE(spisok != NULL);
 	EXPECT_EQ(spisok->length, 0);
 	EXPECT_TRUE(spisok->next == NULL);
@@ -19,7 +19,7 @@ TEST(createListTest, createList_returnRightValue) {
 
 
 TEST(addElementToListTest, addElementToList_addElementAtTheEmptyList) {
-	list spis = {NULL, 0, NULL, NULL};
+	list spis = { NULL, 0, NULL, NULL };
 	list* spisok = &spis;
 	addElementToList(spisok, "123456");
 	EXPECT_TRUE(spisok != NULL);
@@ -30,7 +30,7 @@ TEST(addElementToListTest, addElementToList_addElementAtTheEmptyList) {
 }
 
 TEST(addElementToListTest, addElementToList_addElementAtTheSemiFullList) {
-	list spis = {"123456", 6, NULL, NULL};
+	list spis = { "123456", 6, NULL, NULL };
 	list* spisok = &spis;
 	addElementToList(spisok, "7654321");
 	EXPECT_TRUE(spisok != NULL);
@@ -58,14 +58,14 @@ TEST(addElementToListTest, addElementToList_addElementAtTheFullList) {
 TEST(destroyListTest, destroyList_destroyTheEmptyList) {
 	list* spisok = NULL;
 	destroyList(&spisok);
-	assert(spisok == NULL);
+	ASSERT_TRUE(spisok == NULL);
 }
 
 TEST(destroyListTest, destroyList_destroyTheSemiFullList) {
 	list* spisok;
 	spisok = (list*)malloc(sizeof(list));
 	if (spisok == NULL) {
-		EXPECT_TRUE(1 == 0);
+		ASSERT_TRUE(1 == 0);
 		return;
 	}
 	spisok->next = NULL;
@@ -73,19 +73,20 @@ TEST(destroyListTest, destroyList_destroyTheSemiFullList) {
 	spisok->length = 6;
 	spisok->value = "123456";
 	destroyList(&spisok);
-	assert(spisok == NULL);
+	ASSERT_TRUE(spisok == NULL);
 }
 
 TEST(destroyListTest, destroyList_destroyTheFullList) {
 	list* spisok, * el;
 	spisok = (list*)malloc(sizeof(list));
-	el = (list*)malloc(sizeof(list));
 	if (spisok == NULL) {
-		EXPECT_TRUE(1 == 0);
+		ASSERT_TRUE(1 == 0);
 		return;
 	}
+	el = (list*)malloc(sizeof(list));
 	if (el == NULL) {
-		EXPECT_TRUE(1 == 0);
+		free(spisok);
+		ASSERT_TRUE(1 == 0);
 		return;
 	}
 	spisok->next = el;
@@ -97,7 +98,7 @@ TEST(destroyListTest, destroyList_destroyTheFullList) {
 	el->length = 7;
 	el->value = "7654321";
 	destroyList(&spisok);
-	assert(spisok == NULL);
+	ASSERT_TRUE(spisok == NULL);
 }
 
 TEST(swapValuesTest, swapValuesTest_correctValue) {
@@ -108,6 +109,8 @@ TEST(swapValuesTest, swapValuesTest_correctValue) {
 	swapValues(spisok, el);
 	EXPECT_TRUE(strcmp(spisok->value, "7654321") == 0);
 	EXPECT_TRUE(strcmp(el->value, "123456") == 0);
+	EXPECT_TRUE(spisok->length == strlen("7654321"));
+	EXPECT_TRUE(el->length == strlen("123456"));
 }
 
 TEST(sortListTest, sortList_sortTheEmptyList) {
@@ -124,7 +127,7 @@ TEST(sortListTest, sortList_sortTheSemiFullList) {
 }
 
 TEST(sortListTest, sortList_sortTheListWithTheElementsOfTheSameLengthUnsorted) {
-	list elem1 = { "3", 1, NULL, NULL }, elem2 = { "2", 1, NULL, NULL }, elem3 = { "1", 1, NULL, NULL };
+	list elem1 = { "3", 1, NULL, NULL }, elem2 = { "1", 1, NULL, NULL }, elem3 = { "2", 1, NULL, NULL };
 	list* el1 = &elem1, * el2 = &elem2, * el3 = &elem3;
 	el1->next = el2;
 	el2->next = el3;
@@ -185,6 +188,10 @@ TEST(sortListTest, sortList_sortTheListWithTheElementsOfTheDifferentLengthUnsort
 	EXPECT_TRUE(strcmp(el1->value, "5") == 0);
 	EXPECT_TRUE(strcmp(el1->next->value, "50") == 0);
 	EXPECT_TRUE(strcmp(el1->next->next->value, "555") == 0);
+	EXPECT_TRUE(el1->length == strlen("5"));
+	EXPECT_TRUE(el1->next->length == strlen("50"));
+	EXPECT_TRUE(el1->next->next->length == strlen("555"));
+
 }
 
 TEST(sortListTest, sortList_sortTheListWithTheSameElements) {

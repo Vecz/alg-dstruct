@@ -14,7 +14,7 @@ extern "C" {
 		OK
 	};
 
-	list * createList();
+	list* createList();
 
 	int addElementToList(list* spisok, char* value);
 
