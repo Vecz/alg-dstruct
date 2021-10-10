@@ -26,7 +26,7 @@ extern "C" {
 		else {
 			temp = (list*)malloc(sizeof(list));
 			if (temp == NULL) {
-				return NULL;
+				return ERROR;
 			}
 			temp->length = strlen(value);
 			temp->value = value;
@@ -72,7 +72,7 @@ extern "C" {
 		b->value = tValue;
 	}
 
-	void sortList(list* source) {
+	int sortList(list* source) {
 		if (source == NULL || source->next == NULL) {
 			return OK;
 		}
@@ -91,6 +91,7 @@ extern "C" {
 				pNext = p->next;
 			}
 		}
+		return OK;
 	}
 
 #ifdef __cplusplus
