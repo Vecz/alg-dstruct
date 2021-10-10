@@ -8,7 +8,7 @@ extern "C" {
 	list* createList() {
 		list* spisok = (list*)malloc(sizeof(list));
 		if (spisok == NULL) {
-			return ERROR;
+			return NULL;
 		}
 		spisok->length = 0;
 		spisok->next = NULL;
@@ -26,7 +26,7 @@ extern "C" {
 		else {
 			temp = (list*)malloc(sizeof(list));
 			if (temp == NULL) {
-				return ERROR;
+				return NULL;
 			}
 			temp->length = strlen(value);
 			temp->value = value;
